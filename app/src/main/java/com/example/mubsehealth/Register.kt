@@ -11,16 +11,19 @@ import com.example.mubsehealth.model.PrefsManager
 import com.example.mubsehealth.model.Student
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.database.FirebaseDatabase
+import dmax.dialog.SpotsDialog
 import java.util.*
 
 class Register : AppCompatActivity() {
     private val prefsManager = PrefsManager.INSTANCE
+    var dialog: android.app.AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
         prefsManager.setContext(this.application)
+        dialog = SpotsDialog.Builder().setContext(this).build()
 
         val create = findViewById<Button>(R.id.create)
         create.setOnClickListener {
@@ -47,10 +50,12 @@ class Register : AppCompatActivity() {
             val confirmPassword = conf.text.toString()
 
             if (first.isNotEmpty() && last.isNotEmpty() && email.isNotEmpty() && course.isNotEmpty() && stdNo.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() && password==confirmPassword){
+                dialog!!.show()
+
                 val db = FirebaseDatabase.getInstance()
                 //val id = UUID.randomUUID().toString()
 
-                val student = Student(stdNo,first,last,email,course,stdNo,password)
+                val student = Student(stdNo,first,last,email,course,stdNo,password, "none")
                 val ref = db.getReference("/students").child(stdNo).setValue(student)
 
                 if (ref.isCanceled){
@@ -58,6 +63,7 @@ class Register : AppCompatActivity() {
                 }
                 else{
                     prefsManager.onLogin(student)
+                    dialog!!.dismiss()
                     startActivity(Intent(this, Home::class.java))
                     finish()
                 }

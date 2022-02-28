@@ -12,11 +12,16 @@ import com.example.mubsehealth.model.Doctor
 import com.example.mubsehealth.model.DoctorAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.*
+import dmax.dialog.SpotsDialog
 
 class DoctorsActivity : AppCompatActivity() {
+    lateinit var dialog: android.app.AlertDialog
     override fun onCreate(savedInstanceState: Bundle? ) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_doctors)
+
+        dialog = SpotsDialog.Builder().setContext(this).build()
+        dialog.show()
 
         val rView = findViewById<RecyclerView>(R.id.recyclerView)
         rView.layoutManager = LinearLayoutManager(this)
@@ -25,6 +30,7 @@ class DoctorsActivity : AppCompatActivity() {
         val p = ArrayList<Doctor>()
        val dbRef = FirebaseDatabase.getInstance().getReference("/doctors").addValueEventListener(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
+                dialog.dismiss()
                 for (y in snapshot.children){
                     Log.d("y", "$y")
                     val z = y.getValue(Doctor::class.java)
@@ -38,6 +44,7 @@ class DoctorsActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
+                dialog.dismiss()
                 Toast.makeText(this@DoctorsActivity, "An $error occured", Toast.LENGTH_LONG).show()
             }
 

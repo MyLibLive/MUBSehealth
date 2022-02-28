@@ -22,7 +22,7 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageView3"
-                android:src="@drawable/calendar"
+                android:src="@drawable/clipboard"
                 app:civ_border_color="@color/blue"
                 app:civ_border_width="@dimen/_1sdp"
                 android:layout_width="@dimen/_70sdp"

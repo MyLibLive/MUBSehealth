@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import com.example.mubsehealth.doctors.DoctorsHome
 import com.example.mubsehealth.model.PrefsManager
 import kotlinx.coroutines.*
 
@@ -19,6 +20,10 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({
             if (prefsManager.isLoggedIn()){
                 startActivity(Intent(this, Home::class.java))
+                finish()
+            }
+            else if(prefsManager.isDLoggedIn()){
+                startActivity(Intent(this, DoctorsHome::class.java))
                 finish()
             }
             else{

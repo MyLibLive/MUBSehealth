@@ -47,4 +47,8 @@
 <!--    <style name="TimePickerStyle" parent="@android:style/Widget.Material.Light.TimePicker">-->
 <!--        <item name="android:timePickerMode">spinner</item>-->
 <!--    </style>-->
+
+    <style name="MyDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="android:background">@color/white</item>
+    </style>
 </resources>

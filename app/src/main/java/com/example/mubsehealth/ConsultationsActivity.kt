@@ -14,5 +14,10 @@ class ConsultationsActivity : AppCompatActivity() {
         back.setOnClickListener {
             startActivity(Intent(this, Home::class.java))
         }
+
+        val add = findViewById<ImageView>(R.id.addConsultation)
+        add.setOnClickListener {
+            startActivity(Intent(this, ConsultingDoctor::class.java))
+        }
     }
 }

@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.mubsehealth.CreateReservation
 import com.example.mubsehealth.R
+import com.example.mubsehealth.doctors.FinalReservationActivity
 
 class BookingAdapter(r: Context, options: ArrayList<Booking>) : RecyclerView.Adapter<BookingAdapter.bookingViewHolder>(){
     var c=r
@@ -35,7 +36,6 @@ class BookingAdapter(r: Context, options: ArrayList<Booking>) : RecyclerView.Ada
             val d = itemView.findViewById<TextView>(R.id.date)
             d.text = date
 
-
         }
 
     }
@@ -43,14 +43,20 @@ class BookingAdapter(r: Context, options: ArrayList<Booking>) : RecyclerView.Ada
     override fun onBindViewHolder(holder: bookingViewHolder, position: Int) {
         Log.d("y", "$y")
         Log.d("c", "$c")
-        holder.onBind(c, y[position].date!! + y[position].time, "Dr. ${y[position].dName!!}")
+        holder.onBind(c, y[position].date!! + y[position].time,  y[position].purpose!!)
 
-//        holder.itemView.setOnClickListener {
-//            val intent = Intent(c, CreateReservation::class.java)
-//            intent.putExtra("dId", y[position].id )
-//            intent.putExtra("dPhone", y[position].phone)
-//            c.startActivity(intent)
-//        }
+        holder.itemView.setOnClickListener {
+            val intent = Intent(c, FinalReservationActivity::class.java)
+            intent.putExtra("dName", y[position].dName )
+            intent.putExtra("sNo", y[position].sNo)
+            intent.putExtra("dId", y[position].dId)
+            intent.putExtra("purpose", y[position].purpose )
+            intent.putExtra("time", y[position].time)
+            intent.putExtra("date", y[position].date)
+            intent.putExtra("message", y[position].message)
+            intent.putExtra("approval", y[position].approval)
+            c.startActivity(intent)
+        }
 
     }
 

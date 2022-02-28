@@ -21,20 +21,22 @@ const val KEY_FIRST_NAME = "firstname"
 const val KEY_LAST_NAME = "lastname"
 const val KEY_PASSWORD = "phonenumber"
 const val KEY_EMAIL = "email"
+const val KEY_IMAGE = "hk"
 
 
-const val LOAN_PREF_NAME = "com.example.mubsehealth.model.loan"
-const val LOAN_AMOUNT = "dfg"
-const val LOAN_FOR_TERM = ""
-const val LOAN_PARENT = ""
-const val LOAN_TERM_YEAR = ""
-const val LOAN_SCHOOL = ""
-const val LOAN_STUDENT = ""
-const val UPDATED_AT = ""
-const val CREATED_AT = ""
-const val LOAN_ID = "loanid"
+const val D_PREF_NAME = "com.example.mubsehealth.model.doctor"
+const val D_ID = "dfg"
+const val D_FIRST_NAME = "ff"
+const val D_LAST_NAME = "uu"
+const val D_EMAIL = "gh"
+const val D_PROFESSION = "ss"
+const val D_NO = "mm"
+const val D_URL = "ddu"
+const val D_PHONE = "xxc"
+
 
 /**
  * Brain tree payment
  * */
 const val PAYMENT_REQUEST_CODE = 7777
+

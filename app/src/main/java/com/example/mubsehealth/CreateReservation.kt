@@ -5,26 +5,29 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.example.mubsehealth.model.Booking
 import com.example.mubsehealth.model.PrefsManager
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.database.FirebaseDatabase
+import dmax.dialog.SpotsDialog
 import java.util.*
 
 class CreateReservation : AppCompatActivity() {
 
     private val prefsManager = PrefsManager.INSTANCE
+    lateinit var dialog: android.app.AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_reservation)
 
         prefsManager.setContext(this.application)
-
+        dialog = SpotsDialog.Builder().setContext(this).build()
 
         val image = findViewById<ImageView>(R.id.imageView2)
         image.setOnClickListener {
@@ -35,33 +38,79 @@ class CreateReservation : AppCompatActivity() {
 
         val dName = intent.getStringExtra("name")
         val dPhone = intent.getStringExtra("dPhone")
+        val dId = intent.getStringExtra("dId")
 
-        val date = findViewById<EditText>(R.id.date)
-        val time = findViewById<EditText>(R.id.time)
+        val date = findViewById<TextView>(R.id.date)
+        val time = findViewById<TextView>(R.id.time)
         val purpose = findViewById<EditText>(R.id.purpose)
 
-//        date.setOnClickListener {
-//            val currentDate = Calendar.getInstance()
-//            val year = currentDate.get(Calendar.YEAR)
-//            val month = currentDate.get(Calendar.MONTH)
-//            val dayOfMonth = currentDate.get(Calendar.DAY_OF_MONTH)
-//            SupportedDatePickerDialog(this, R.style.SpinnerDatePickerDialogTheme, this, year, month, dayOfMonth).show()
+
+
+        date.setOnClickListener {
+            val cal = MaterialDatePicker.Builder.datePicker()
+            cal.setTitleText("Select a Date")
+            val calender = cal.build()
+            calender.show(supportFragmentManager, "MATERIAL_DATE_PICKER")
+
+            calender.addOnPositiveButtonClickListener(object : MaterialPickerOnPositiveButtonClickListener<Long>{
+                override fun onPositiveButtonClick(selection: Long) {
+                    date.setText(calender.headerText)
+                }
+
+            })
+
+        }
 //
-//        }
-//
-//        time.setOnClickListener {
-//            val currentDate = Calendar.getInstance()
-//            val month = currentDate.get(Calendar.MONTH)
-//            val dayOfMonth = currentDate.get(Calendar.DAY_OF_MONTH)
-//            SupportedTimePickerDialog(
-//                context = this,
-//                themeResId =  R.style.SpinnerTimePickerDialogTheme,
-//                timeSetListener = this,
-//                mInitialHourOfDay = month,
-//                mInitialMinute = dayOfMonth,
-//                mIs24HourView = true)
-//                .show()
-//        }
+        time.setOnClickListener {
+
+            val t = MaterialTimePicker.Builder().setTitleText("Select time").setHour(12).setMinute(10)
+                .setTimeFormat(TimeFormat.CLOCK_12H).build()
+
+
+            val timer = t.show(supportFragmentManager, "TIME")
+            t.addOnPositiveButtonClickListener {
+                val phour = t.hour
+                val pmin = t.minute
+
+                val fTime = when {
+                    phour > 12 -> {
+                        if (pmin<10){
+                            "${phour-12}:${pmin} pm"
+                        }
+                        else{
+                            "${phour-12}:${pmin} pm"
+                        }
+                    }
+                    phour == 12 -> {
+                        if (pmin<10){
+                            "${phour}:${pmin} pm"
+                        }
+                        else{
+                            "${phour}:${pmin} pm"
+                        }
+                    }
+                    phour == 0 -> {
+                        if (pmin<10){
+                            "${phour+12}:${pmin} am"
+                        }
+                        else{
+                            "${phour+12}:${pmin} am"
+                        }
+                    }
+                    else -> {
+                        if (pmin<10){
+                            "${phour}:${pmin} am"
+                        }
+                        else{
+                            "${phour}:${pmin} am"
+                        }
+                    }
+                }
+
+                time.setText(fTime)
+            }
+
+        }
 
 
         val create = findViewById<Button>(R.id.create)
@@ -72,6 +121,7 @@ class CreateReservation : AppCompatActivity() {
             val p = purpose.text.toString()
 
             if (d.isNotEmpty() && t.isNotEmpty() && p.isNotEmpty()){
+                dialog.show()
                 val db = FirebaseDatabase.getInstance()
                 //val k = db.reference.key
 
@@ -80,13 +130,15 @@ class CreateReservation : AppCompatActivity() {
                 val id = prefsManager.getStudent().id
                 Log.d("did", "$dName")
                 Log.d("dphone", "$dPhone")
-                val ref = db.getReference("/reservations").child(id!!).child(k).setValue(Booking(d,t,p,dName!!, dPhone!!))
+                val ref = db.getReference("/reservations").child(id!!).push().setValue(Booking(d,t,p,dName!!, dId!!, id, "Unapproved", "None"))
+                val dRef = db.getReference("/reservations").child(dId).push().setValue(Booking(d,t,p,dName, dId, id, "Unapproved", "None"))
 
                 if (ref.isCanceled){
                     Toast.makeText(this, "An error occurred", Toast.LENGTH_LONG).show()
                 }
                 else{
-
+                    dialog.dismiss()
+                    FirebaseDatabase.getInstance().getReference("/notifications").child(dId).push().setValue(Booking(d,t,p,dName, dId, id, "Unapproved", "None"))
                     AlertDialog.Builder(this).setMessage("Reservation created").setPositiveButton("OK", object :DialogInterface.OnClickListener{
                         override fun onClick(p0: DialogInterface?, p1: Int) {
                             startActivity(Intent(this@CreateReservation, Home::class.java))

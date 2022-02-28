@@ -67,16 +67,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <TextView
             android:id="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
             android:layout_margin="@dimen/_5sdp"
             android:background="@drawable/bg"
             android:hint="@string/date"
-            android:inputType="date"
             android:maxLines="1"
-            android:paddingLeft="@dimen/_25sdp"
+            android:padding="@dimen/_15sdp"
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
             android:textSize="@dimen/_20ssp"
@@ -93,7 +92,7 @@
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@+id/date" />
 
-        <EditText
+        <TextView
             android:id="@+id/time"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
@@ -101,7 +100,7 @@
             android:background="@drawable/bg"
             android:hint="@string/time"
             android:maxLines="1"
-            android:paddingLeft="@dimen/_25sdp"
+            android:padding="@dimen/_15sdp"
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
             android:textSize="@dimen/_20ssp"

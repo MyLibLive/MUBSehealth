@@ -8,13 +8,15 @@ class Student{
     var course:String ?= null
     var stdNo:String ?= null
     var password:String ?= null
+    var image:String ?= null
             constructor(id:String,
                         firstName:String,
                         lastName:String,
                         email:String,
                         course:String,
                         stdNo:String,
-                        password:String,){
+                        password:String,
+                        image:String,){
 
                 this.id = id
                 this.firstName=firstName
@@ -23,6 +25,7 @@ class Student{
                 this.course=course
                 this.stdNo=stdNo
                 this.password=password
+                this.image = image
             }
 
     constructor()

@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.fragment.app.FragmentActivity
 import com.example.mubsehealth.model.Doctor
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.button.MaterialButton
@@ -26,6 +27,7 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import dmax.dialog.SpotsDialog
 
 
 class AddDoctor : AppCompatActivity() {
@@ -40,6 +42,7 @@ class AddDoctor : AppCompatActivity() {
     var image_uri: Uri? = null
     lateinit var b:ImageView
     var mAuth:FirebaseAuth ?= null
+    lateinit var dialog: android.app.AlertDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +50,7 @@ class AddDoctor : AppCompatActivity() {
         setContentView(R.layout.activity_add_doctor)
 
         mAuth = FirebaseAuth.getInstance()
+        dialog = SpotsDialog.Builder().setContext(this).build()
 
         val back = findViewById<ImageView>(R.id.imageView2)
         back.setOnClickListener {
@@ -74,37 +78,46 @@ class AddDoctor : AppCompatActivity() {
             val ph = findViewById<EditText>(R.id.phone)
             val phone = ph.text.toString()
 
-            uploadImage(dNo, first,last,email, course, dNo, phone)
+            if (dNo.isNotEmpty() && first.isNotEmpty() && last.isNotEmpty() && email.isNotEmpty() && course.isNotEmpty() && phone.isNotEmpty() && image_uri != null){
+                dialog.show()
+                uploadImage(dNo, first,last,email, course, dNo, phone)
+                Log.d("upload", "${uploadImage(dNo, first,last,email, course, dNo, phone)}")
+            }
+            else{
+                Toast.makeText(this, "fill in all details", Toast.LENGTH_SHORT).show()
+            }
+
 
         }
 
 
         b = findViewById(R.id.img)
         b.setOnClickListener {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.CAMERA) ==
-                PackageManager.PERMISSION_DENIED ||
-                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                PackageManager.PERMISSION_DENIED
-            ) {
-                //permission not enabled, request it
-                val permission = arrayOf(
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-                //show popup to request permissions
-                requestPermissions(permission, PICK_PERMISSION_CODE)
-
-            } else {
-                //permission already granted
-                //openCamera()
-                pickImageFromGallery()
-            }
-        } else {
-            //system os < marshmallow
-            //openCamera()
             pickImageFromGallery()
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (checkSelfPermission(Manifest.permission.CAMERA) ==
+//                PackageManager.PERMISSION_DENIED ||
+//                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+//                PackageManager.PERMISSION_DENIED
+//            ) {
+//                //permission not enabled, request it
+//                val permission = arrayOf(
+//                    Manifest.permission.CAMERA,
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                )
+//                //show popup to request permissions
+//                requestPermissions(permission, PICK_PERMISSION_CODE)
+//
+//            } else {
+//                //permission already granted
+//                //openCamera()
+//                pickImageFromGallery()
+//            }
+//        } else {
+//            //system os < marshmallow
+//            //openCamera()
+//            pickImageFromGallery()
+//        }
      }
    }
 
@@ -192,59 +205,89 @@ class AddDoctor : AppCompatActivity() {
         phone: String,
     ) {
         if (image_uri != null && mAuth!!.currentUser != null) {
+            Log.d("image", image_uri.toString())
+
+            //// && mAuth!!.currentUser != null
 
             // Defining the child of storageReference
             val sReference = FirebaseStorage.getInstance().getReference().child("/images").child(image_uri.toString())
-            sReference.putFile(image_uri!!).addOnSuccessListener {
-                object : OnSuccessListener<UploadTask.TaskSnapshot> {
-                    override fun onSuccess(p0: UploadTask.TaskSnapshot?) {
-                        Log.d("P0", p0.toString())
-                        Toast.makeText(this@AddDoctor, "Image Uploaded", Toast.LENGTH_LONG).show()
-                        val imgUrl = p0!!.uploadSessionUri.toString()
-                        Log.d("imgUrl", imgUrl)
-
-
-                        val db =
-                            FirebaseDatabase.getInstance().getReference("/doctors").child(doctorNo)
-                                .setValue(
-                                    Doctor(
-                                        id,
-                                        firstName,
-                                        lastName,
-                                        email,
-                                        profession,
-                                        doctorNo,
-                                        imgUrl,
-                                        phone
-                                    )
-                                )
-                        if (db.isCanceled) {
-                            Toast.makeText(this@AddDoctor, "An error occurred", Toast.LENGTH_LONG)
-                                .show()
-                        } else {
-                            startActivity(Intent(this@AddDoctor, DoctorsActivity::class.java))
-                            finish()
-                        }
+           val q =  sReference.putFile(image_uri!!)
+            val utask = q.continueWithTask{ task ->
+                if (!task.isSuccessful){
+                    task.exception.let {
+                        throw it!!
                     }
+                }
+                else{
+                    val t = sReference.downloadUrl
+                    dbStore( id,
+                        firstName,
+                        lastName,
+                        email,
+                        profession,
+                        doctorNo,
+                        t.toString(),
+                        phone)
+                }
+                sReference.downloadUrl
 
-
+            }.addOnCompleteListener { task ->
+                if (task.isSuccessful){
+                    val imgUrl = task.result.toString()
+                    dbStore( id,
+                        firstName,
+                        lastName,
+                        email,
+                        profession,
+                        doctorNo,
+                        imgUrl,
+                        phone)
+                }
+                else{
+                    Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
                 }
             }
-                .addOnFailureListener {
-                    object : OnFailureListener {
-                        override fun onFailure(p0: java.lang.Exception) {
-                            Toast.makeText(
-                                this@AddDoctor,
-                                "An error occurred uploading",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
 
-                    }
-                }
+//                .addOnSuccessListener {
+//                object : OnSuccessListener<UploadTask.TaskSnapshot> {
+//                    override fun onSuccess(p0: UploadTask.TaskSnapshot?) {
+//                        Log.d("P0", p0.toString())
+//                        Toast.makeText(this@AddDoctor, "Image Uploaded", Toast.LENGTH_LONG).show()
+//                        val imgUrl = p0!!.uploadSessionUri.toString()
+//                        Log.d("imgUrl", imgUrl)
+//
+//                        dbStore(id,
+//                            firstName,
+//                            lastName,
+//                            email,
+//                            profession,
+//                            doctorNo,
+//                            imgUrl,
+//                            phone)
+//
+//                    }
+//
+//
+//                }
+//            }
+//                .addOnFailureListener {
+//                    object : OnFailureListener {
+//                        override fun onFailure(p0: java.lang.Exception) {
+//                            Toast.makeText(
+//                                this@AddDoctor,
+//                                "An error occurred uploading",
+//                                Toast.LENGTH_LONG
+//                            ).show()
+//                        }
+//
+//                    }
+//                }
         }
         else{
 
+            Log.d("image", image_uri.toString())
+
+            Log.d("anonymous", "ddd")
             signInAnonymously(id,
                 firstName,
                 lastName,
@@ -267,48 +310,101 @@ class AddDoctor : AppCompatActivity() {
         mAuth!!.signInAnonymously().addOnSuccessListener(this, OnSuccessListener<AuthResult?> {
             // Defining the child of storageReference
             val sReference = FirebaseStorage.getInstance().getReference().child("/images").child(image_uri.toString())
-            sReference.putFile(image_uri!!).addOnSuccessListener {
-                OnSuccessListener<UploadTask.TaskSnapshot> { p0 ->
-           Toast.makeText(this, "Image Uploaded", Toast.LENGTH_LONG).show()
-                    Log.d("P0", p0.toString())
-                    val imgUrl = p0!!.uploadSessionUri.toString()
-                    Log.d("imgUrl", imgUrl)
+           val q = sReference.putFile(image_uri!!)
 
-                    val db =
-                        FirebaseDatabase.getInstance().getReference("/doctors").child(doctorNo)
-                            .setValue(
-                                Doctor(
-                                    id,
-                                    firstName,
-                                    lastName,
-                                    email,
-                                    profession,
-                                    doctorNo,
-                                    imgUrl,
-                                    phone
-                                )
-                            )
-                    if (db.isCanceled) {
-                        Toast.makeText(this@AddDoctor, "An error occurred", Toast.LENGTH_LONG)
-                            .show()
-                    } else {
-                        startActivity(Intent(this@AddDoctor, DoctorsActivity::class.java))
-                        finish()
-                    }
-                }
-            }
-                .addOnFailureListener {
-                    object : OnFailureListener {
-                        override fun onFailure(p0: java.lang.Exception) {
-                            Toast.makeText(
-                                this@AddDoctor,
-                                "An error occurred uploading",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+                   val utask = q.continueWithTask{ task ->
+                       if (!task.isSuccessful){
+                           task.exception.let {
+                               throw it!!
+                           }
+                       }
+                       else{
+                           val t = sReference.downloadUrl
+                           dbStore( id,
+                               firstName,
+                               lastName,
+                               email,
+                               profession,
+                               doctorNo,
+                               t.toString(),
+                               phone)
+                       }
+                       sReference.downloadUrl
 
-                    }
-                }
+                   }.addOnCompleteListener { task ->
+                       if (task.isSuccessful){
+                           val imgUrl = task.result.toString()
+                           dbStore( id,
+                               firstName,
+                               lastName,
+                               email,
+                               profession,
+                               doctorNo,
+                               imgUrl,
+                               phone)
+                       }
+                       else{
+                           Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
+                       }
+                   }
+
+
+
+//                .addOnSuccessListener {
+//                OnSuccessListener<UploadTask.TaskSnapshot> { p0 ->
+//
+//                    dialog.dismiss()
+//           Toast.makeText(this, "Image Uploaded", Toast.LENGTH_LONG).show()
+//                    Log.d("P0", p0.toString())
+//                    val imgUrl = p0!!.uploadSessionUri.toString()
+//                    Log.d("imgUrl", imgUrl)
+//
+//                    dbStore( id,
+//                        firstName,
+//                        lastName,
+//                        email,
+//                        profession,
+//                        doctorNo,
+//                        imgUrl,
+//                        phone)
+//
+//                }
+//            }
+//                .addOnFailureListener {
+//                    object : OnFailureListener {
+//                        override fun onFailure(p0: java.lang.Exception) {
+//                            Toast.makeText(
+//                                this@AddDoctor,
+//                                "An error occurred uploading",
+//                                Toast.LENGTH_LONG
+//                            ).show()
+//                        }
+//
+//                    }
+//                }
+//                       .addOnCompleteListener{
+//                           OnCompleteListener<UploadTask.TaskSnapshot> { p0 ->
+//
+//                               dialog.dismiss()
+//                               Toast.makeText(this, "Image Uploaded", Toast.LENGTH_LONG).show()
+//                               Log.d("P0", p0.toString())
+//                               val imgUrl = p0.result.uploadSessionUri.toString()
+//                               Log.d("imgUrl", imgUrl)
+//
+//                               dbStore( id,
+//                                   firstName,
+//                                   lastName,
+//                                   email,
+//                                   profession,
+//                                   doctorNo,
+//                                   imgUrl,
+//                                   phone)
+//
+//                           }
+//
+//                       }
+
+
 
         })
             .addOnFailureListener(this,
@@ -320,6 +416,37 @@ class AddDoctor : AppCompatActivity() {
                     )
                 })
 
+    }
+
+    fun dbStore(id:String,
+                 firstName:String,
+                 lastName:String,
+                 email:String,
+                 profession:String,
+                 doctorNo:String,
+                 imgUrl:String,
+                 phone:String){
+        val db =
+            FirebaseDatabase.getInstance().getReference("/doctors").child(doctorNo)
+                .setValue(
+                    Doctor(
+                        id,
+                        firstName,
+                        lastName,
+                        email,
+                        profession,
+                        doctorNo,
+                        imgUrl,
+                        phone
+                    )
+                )
+        if (db.isCanceled) {
+            Toast.makeText(this@AddDoctor, "An error occurred", Toast.LENGTH_LONG)
+                .show()
+        } else {
+            startActivity(Intent(this@AddDoctor, DoctorsActivity::class.java))
+            finish()
+        }
     }
 
 

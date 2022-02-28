@@ -13,17 +13,21 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import dmax.dialog.SpotsDialog
 
 class ResetPassword : AppCompatActivity() {
 
 
     private val prefsManager = PrefsManager.INSTANCE
+    lateinit var dialog: android.app.AlertDialog
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reset_password)
 
         prefsManager.setContext(this.application)
+        dialog = SpotsDialog.Builder().setContext(this).build()
 
         val b = findViewById<ImageView>(R.id.imageView2)
         b.setOnClickListener {
@@ -42,6 +46,7 @@ class ResetPassword : AppCompatActivity() {
             val password = pwd.text.toString()
 
             if(stdNo.isNotEmpty() && password.isNotEmpty()){
+                dialog.show()
 
                     val db = FirebaseDatabase.getInstance()
                    val ref =  db.getReference().child("/students").child(stdNo)
@@ -63,7 +68,7 @@ class ResetPassword : AppCompatActivity() {
                                     Toast.makeText(this@ResetPassword, "An error occurred", Toast.LENGTH_LONG).show()
                                 }
                                 else{
-                                    val student = Student(sId!!, first!!, last!!, email!!, course!!, stdNumber!!, password)
+                                    val student = Student(sId!!, first!!, last!!, email!!, course!!, stdNumber!!, password, "none")
                                     prefsManager.onLogin(student)
                                     startActivity(Intent(this@ResetPassword, Home::class.java))
                                     finish()

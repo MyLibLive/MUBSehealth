@@ -25,6 +25,7 @@
                 android:src="@drawable/ic_baseline_account_circle_24"
                 app:civ_border_color="@color/black"
                 app:civ_border_width="@dimen/_2sdp"
+                android:tint="@color/blue"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_70sdp"
                 android:layout_margin="@dimen/_5sdp"

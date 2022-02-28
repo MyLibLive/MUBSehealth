@@ -3,19 +3,50 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Softbox 001/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_create_reservation.xml" value="0.17916666666666667" />
+        <entry key="..\:/Users/Softbox 001/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_diagnosis.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/Softbox 001/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_diagnosis_report.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/Softbox 001/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_doctor_reservation.xml" value="0.22" />
+        <entry key="..\:/Users/Softbox 001/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_doctors_home.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/Softbox 001/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_edit_profile.xml" value="0.17916666666666667" />
+        <entry key="..\:/Users/Softbox 001/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_final_reservation.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/Softbox 001/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_home.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/Softbox 001/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_my_account.xml" value="0.17916666666666667" />
+        <entry key="..\:/Users/Softbox 001/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_register.xml" value="0.17916666666666667" />
+        <entry key="..\:/Users/Softbox 001/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/doctors_list.xml" value="0.17916666666666667" />
+        <entry key="..\:/Users/Softbox 001/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/notification_layout.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_add_doctor.xml" value="0.18" />
-        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_consultations.xml" value="0.1" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_admin.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_approved_diagnosis.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_book_doctor.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_chat_message.xml" value="0.11" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_consultations.xml" value="0.18" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_consulting_doctor.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_create_reservation.xml" value="0.22" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_diagnosis.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_diagnosis_report.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_doc_chat_messages.xml" value="0.1" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_doctor_account_info.xml" value="0.1" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_doctor_chats.xml" value="0.1" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_doctor_info.xml" value="0.14" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_doctor_reservation.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_doctors.xml" value="0.18" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_doctors_home.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_fegrthyjuthrg.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_final_reservation.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_home.xml" value="0.18" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_my_account.xml" value="0.19010416666666666" />
-        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_my_account.xml" value="0.15" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_register.xml" value="0.18" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_reservations.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_reset_password.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_select_doctor.xml" value="0.1" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/activity_select_doctor.xml" value="0.22" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/booking_list.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/doctors_list.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/from_message_layout.xml" value="0.22" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/message_area.xml" value="0.22" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/MUBSEHealth/app/src/main/res/layout/to_message_layout.xml" value="0.33" />
         <entry key="app/src/main/res/drawable/bg.xml" value="0.18854166666666666" />
         <entry key="app/src/main/res/layout/activity_add_doctor.xml" value="0.16802536231884058" />
         <entry key="app/src/main/res/layout/activity_admin.xml" value="0.15353260869565216" />

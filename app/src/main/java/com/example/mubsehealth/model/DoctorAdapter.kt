@@ -16,6 +16,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.mubsehealth.CreateReservation
+import com.example.mubsehealth.DoctorInfo
 
 class DoctorAdapter(r:Context, options: ArrayList<Doctor>) : RecyclerView.Adapter<DoctorAdapter.doctorViewHolder>(){
     var c=r
@@ -52,9 +53,14 @@ class DoctorAdapter(r:Context, options: ArrayList<Doctor>) : RecyclerView.Adapte
         holder.onBind(c, y[position].imgUrl!!, y[position].firstName!! + y[position].lastName!!)
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(c, CreateReservation::class.java)
+            val intent = Intent(c, DoctorInfo::class.java)
             intent.putExtra("name", y[position].firstName!! + y[position].lastName!!)
             intent.putExtra("dPhone", y[position].phone)
+
+            intent.putExtra("img", y[position].imgUrl)
+            intent.putExtra("email", y[position].email)
+            intent.putExtra("prof", y[position].profession)
+            intent.putExtra("idNo", y[position].doctorNo)
             c.startActivity(intent)
         }
 

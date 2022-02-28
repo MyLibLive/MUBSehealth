@@ -6,7 +6,7 @@
     <string name="new_password">New Password</string>
     <string name="confirm">Confirm Password</string>
     <string name="login">Login</string>
-    <string name="account">Create An Account</string>
+    <string name="account">Have no Account? Create One </string>
     <string name="create">Create Account</string>
     <string name="forgot">Forgot Password</string>
     <string name="reset">Reset Password</string>
@@ -24,6 +24,7 @@
     <string name="service">Services</string>
     <string name="select">Select Doctor</string>
     <string name="reserve">Reservations</string>
+    <string name="reservation">Reservation</string>
     <string name="consult">Consultations</string>
     <string name="doctors">Doctors</string>
     <string name="student">Students</string>
@@ -37,7 +38,17 @@
     <string name="purpose">Purpose</string>
     <string name="date">Select Date</string>
     <string name="time">Select time</string>
+    <string name="recent">Recent Diagnosis</string>
 
     <string name="logout">Log Out</string>
+    <string name="diagnosis">Diagnosis</string>
+    <string name="result">Results</string>
+    <string name="recommendation">Recommendation</string>
+    <string name="prescription">Prescription</string>
+    <string name="approve">Approve Report</string>
+    <string name="approved">Approved Reports</string>
+    <string name="report">Diagnosis Report</string>
+    
+    <string name="edit">Edit Profile</string>
 
 </resources>
